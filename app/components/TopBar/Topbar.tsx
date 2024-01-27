@@ -19,7 +19,7 @@ export default function Topbar() {
         }
         className={styles.link}
       >
-        Products
+        מוצרים
       </Link>
       <Link
         href="/locations"
@@ -33,7 +33,7 @@ export default function Topbar() {
         }
         className={styles.link}
       >
-        Locations
+        מיקומים
       </Link>
       <Link
         href="/orders"
@@ -47,7 +47,7 @@ export default function Topbar() {
         }
         className={styles.link}
       >
-        Orders
+        הזמנות
       </Link>
     </nav>
   );
