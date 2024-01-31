@@ -1,4 +1,27 @@
-.products{
-    display: flex;
-    flex-direction: column;
+.pageContainer {
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.pageTitle {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.addButtonContainer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.addButton {
+    background-color: #4caf50;
+    color: white;
+    font-size: 24px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }

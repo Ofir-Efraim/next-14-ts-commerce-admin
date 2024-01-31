@@ -1,0 +1,50 @@
+/* ProductForm.module.css */
+
+.formContainer {
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 300px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.inputContainer {
+    margin-bottom: 10px;
+}
+
+.label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    direction: rtl;
+    text-align: right;
+    float: right;
+}
+
+.input,
+.textarea {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    text-align: right;
+    direction: rtl;
+}
+
+.fileInput {
+    margin-bottom: 10px;
+}
+
+.pictureContainer {
+    margin-top: 10px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button {
+    padding: 10px;
+    cursor: pointer;
+}
