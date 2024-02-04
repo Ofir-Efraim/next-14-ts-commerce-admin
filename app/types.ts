@@ -22,3 +22,7 @@ export type nutritionalValues = {
   sodium: number;
   sugars: number;
 };
+export type location = {
+  name: string;
+  id: string;
+};

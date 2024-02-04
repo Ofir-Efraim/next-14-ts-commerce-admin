@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import Product from "./Product/Product";
 import { useRouter } from "next/navigation";
 import ProductsTable from "./ProductsTable/ProductsTable";
-import { AddCircleOutline } from "@mui/icons-material";
+import AddIcon from "@mui/icons-material/Add";
 import ProductForm from "./Product/ProductForm/ProductForm";
 import {
   Button,
@@ -51,7 +51,7 @@ export default function Products({ products }: ProductsProps) {
           className={styles.addButton}
           onClick={() => setIsProductFormOpen(true)}
         >
-          <AddCircleOutline />
+          <AddIcon />
         </button>
       </div>
 

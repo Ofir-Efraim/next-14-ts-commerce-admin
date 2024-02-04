@@ -1,0 +1,10 @@
+.formContainer {
+    padding: 20px;
+    text-align: right;
+    direction: rtl;
+}
+
+.inputField {
+    margin-bottom: 20px;
+
+}
