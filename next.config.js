@@ -3,8 +3,11 @@ const nextConfig = {
     images: {
         remotePatterns: [{
             protocol: 'https',
-            hostname: 'images.unsplash.com',
+            hostname: 'zechem-products.s3.amazonaws.com',
         }, ],
+    },
+    env: {
+        SERVER_ENDPOINT: 'http://127.0.0.1:5000',
     },
 }
 

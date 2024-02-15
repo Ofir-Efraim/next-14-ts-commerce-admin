@@ -12,22 +12,23 @@ import styles from "./Locations.module.css"; // Adjust the import path based on 
 import { location } from "@/app/types";
 import LocationsList from "./LocationsList/LocationsList";
 import AddLocationForm from "./AddLocationForm/AddLocationForm";
+import { addLocation, deleteLocation } from "@/app/api";
 type locationProps = {
   locations: location[];
-  setLocations: Dispatch<SetStateAction<location[]>>;
+  fetchLocations: () => Promise<void>;
 };
-const Locations = ({ locations, setLocations }: locationProps) => {
+const Locations = ({ locations, fetchLocations }: locationProps) => {
   const [isAddLocationFormOpen, setIsAddLocationFormOpen] = useState(false);
 
-  const handleAddLocation = (newLocationName: string) => {
-    console.log(newLocationName);
+  const handleAddLocation = async (newLocationName: string) => {
+    await addLocation(newLocationName);
+    fetchLocations();
     setIsAddLocationFormOpen(false);
   };
 
-  const handleRemoveLocation = (locationId: string) => {
-    console.log(locationId);
-    // Implement the logic to remove the location
-    // Update the locations state accordingly
+  const handleRemoveLocation = async (locationId: string) => {
+    await deleteLocation(locationId);
+    fetchLocations();
   };
 
   return (

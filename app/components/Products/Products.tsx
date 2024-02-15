@@ -1,5 +1,5 @@
 "use client";
-import { product } from "@/app/types";
+import { newProduct, product } from "@/app/types";
 import styles from "./Products.module.css";
 import React, { useState } from "react";
 import Product from "./Product/Product";
@@ -14,27 +14,31 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import { addProduct, deleteProduct, toggleActive } from "@/app/api";
 type ProductsProps = {
   products: product[];
+  fetchProducts: () => Promise<void>;
 };
-export default function Products({ products }: ProductsProps) {
+export default function Products({ products, fetchProducts }: ProductsProps) {
   const router = useRouter();
   const [isProductFormOpen, setIsProductFormOpen] = useState(false);
-  const handleToggleActive = (productId: string) => {
-    console.log(productId);
+  const handleToggleActive = async (productId: string) => {
+    await toggleActive(productId);
+    fetchProducts();
   };
 
-  const handleDelete = (productId: string) => {
-    console.log(productId);
+  const handleDelete = async (productId: string) => {
+    await deleteProduct(productId);
+    fetchProducts();
   };
 
   const handleEdit = (productId: string) => {
     router.push(`/products/${productId}`);
   };
-  const handleAddProduct = (newProduct: product) => {
-    // Implement the logic to add a new product
-    // Update the products state accordingly
+  const handleAddProduct = async (newProduct: newProduct) => {
+    await addProduct(newProduct);
     setIsProductFormOpen(false);
+    fetchProducts();
   };
   return (
     <div className={styles.pageContainer}>

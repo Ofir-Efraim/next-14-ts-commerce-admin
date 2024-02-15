@@ -7,6 +7,7 @@ export type product = {
   active: boolean;
   nutritionalValues: nutritionalValues;
 };
+export type newProduct = Omit<product, "id">;
 export type nutritionalValues = {
   ingredients: string[];
   servingSize: number;
@@ -26,7 +27,10 @@ export type location = {
   name: string;
   id: string;
 };
-export type orderItem = Omit<product, "nutritionalValues" | "description" | "picture"> & {
+export type orderItem = Omit<
+  product,
+  "nutritionalValues" | "description" | "picture"
+> & {
   quantity: number;
   order_id: string;
 };
@@ -37,7 +41,7 @@ export type order = {
   lastName: string;
   email: string;
   phoneNumber: string;
-  totalPrice : number;
+  totalPrice: number;
   pickupSpot?: string;
   deliveryAddress?: string;
   products: orderItem[];

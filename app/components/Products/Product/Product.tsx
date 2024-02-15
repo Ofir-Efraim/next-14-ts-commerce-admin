@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import { nutritionalValues, product } from "@/app/types";
 import Image from "next/image";
 import styles from "./Product.module.css";
+import { editProduct } from "@/app/api";
 
 type ProductProps = {
-  product: product;
+  product: product | null;
 };
 
 const Product = ({ product }: ProductProps) => {
@@ -24,11 +25,75 @@ const Product = ({ product }: ProductProps) => {
       [id]: value,
     }));
   };
+  const handlePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const selectedFile = event.target.files[0];
+      setEditableProduct((prevProduct) => ({
+        ...prevProduct,
+        picture: selectedFile,
+      }));
+    }
+  };
+  const handleNestedInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { id, value, type } = e.target;
+    setEditableProduct((prevProduct) => ({
+      ...prevProduct!,
+      nutritionalValues: {
+        ...prevProduct?.nutritionalValues!,
+        [id]: value,
+      },
+    }));
+  };
 
-  const handleSaveChanges = () => {
-    // Implement the logic to save changes to the product
-    // Call your API or update state accordingly
-    console.log("Saving changes:", editableProduct);
+  const handleAddIngredient = () => {
+    setEditableProduct((prevProduct) => ({
+      ...prevProduct!,
+      nutritionalValues: {
+        ...prevProduct?.nutritionalValues!,
+        ingredients: [
+          ...(prevProduct?.nutritionalValues?.ingredients || []),
+          "",
+        ],
+      },
+    }));
+  };
+
+  const handleRemoveIngredient = (index: number) => {
+    setEditableProduct((prevProduct) => ({
+      ...prevProduct!,
+      nutritionalValues: {
+        ...prevProduct?.nutritionalValues!,
+        ingredients: [
+          ...(prevProduct?.nutritionalValues?.ingredients?.slice(0, index) ||
+            []),
+          ...(prevProduct?.nutritionalValues?.ingredients?.slice(index + 1) ||
+            []),
+        ],
+      },
+    }));
+  };
+
+  const handleIngredientChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const { value } = e.target;
+    setEditableProduct((prevProduct) => ({
+      ...prevProduct!,
+      nutritionalValues: {
+        ...prevProduct?.nutritionalValues!,
+        ingredients: (prevProduct?.nutritionalValues?.ingredients || []).map(
+          (ingredient, i) => (i === index ? value : ingredient)
+        ),
+      },
+    }));
+  };
+
+  const handleSaveChanges = async () => {
+    await editProduct(editableProduct as product);
+    router.push("/products");
   };
 
   const handleCancel = () => {
@@ -75,16 +140,18 @@ const Product = ({ product }: ProductProps) => {
           type="file"
           accept="image/*"
           id="picture"
-          // onChange={handlePictureChange}
+          onChange={handlePictureChange}
         />
         {editableProduct.picture && (
           <div className={styles.pictureContainer}>
-            <Image
-              src={typeof(editableProduct.picture) === "string" ? editableProduct.picture : ""}
-              alt={editableProduct.name}
-              width={100}
-              height={100}
-            />
+            {typeof editableProduct.picture === "string" && (
+              <Image
+                src={editableProduct.picture}
+                alt={editableProduct.name ? editableProduct.name : ""}
+                width={100}
+                height={100}
+              />
+            )}
           </div>
         )}
       </div>
@@ -99,7 +166,7 @@ const Product = ({ product }: ProductProps) => {
           type="number"
           id="servingSize"
           value={editableProduct.nutritionalValues?.servingSize || ""}
-          onChange={handleInputChange}
+          onChange={handleNestedInputChange}
         />
       </div>
       <div>
@@ -111,7 +178,7 @@ const Product = ({ product }: ProductProps) => {
           type="number"
           id="calories"
           value={editableProduct.nutritionalValues?.calories || ""}
-          onChange={handleInputChange}
+          onChange={handleNestedInputChange}
         />
       </div>
       <div>
@@ -123,7 +190,7 @@ const Product = ({ product }: ProductProps) => {
           type="number"
           id="caloriesFromFat"
           value={editableProduct.nutritionalValues?.caloriesFromFat || ""}
-          onChange={handleInputChange}
+          onChange={handleNestedInputChange}
         />
       </div>
       <div>
@@ -135,7 +202,7 @@ const Product = ({ product }: ProductProps) => {
           type="number"
           id="carbs"
           value={editableProduct.nutritionalValues?.carbs || ""}
-          onChange={handleInputChange}
+          onChange={handleNestedInputChange}
         />
       </div>
       <div>
@@ -147,7 +214,7 @@ const Product = ({ product }: ProductProps) => {
           type="number"
           id="protein"
           value={editableProduct.nutritionalValues?.protein || ""}
-          onChange={handleInputChange}
+          onChange={handleNestedInputChange}
         />
       </div>
       <div>
@@ -159,7 +226,7 @@ const Product = ({ product }: ProductProps) => {
           type="number"
           id="fats"
           value={editableProduct.nutritionalValues?.fats || ""}
-          onChange={handleInputChange}
+          onChange={handleNestedInputChange}
         />
       </div>
       <div>
@@ -171,7 +238,7 @@ const Product = ({ product }: ProductProps) => {
           type="number"
           id="saturatedFat"
           value={editableProduct.nutritionalValues?.saturatedFat || ""}
-          onChange={handleInputChange}
+          onChange={handleNestedInputChange}
         />
       </div>
       <div>
@@ -183,7 +250,7 @@ const Product = ({ product }: ProductProps) => {
           type="number"
           id="transFat"
           value={editableProduct.nutritionalValues?.transFat || ""}
-          onChange={handleInputChange}
+          onChange={handleNestedInputChange}
         />
       </div>
       <div>
@@ -195,7 +262,7 @@ const Product = ({ product }: ProductProps) => {
           type="number"
           id="fiber"
           value={editableProduct.nutritionalValues?.fiber || ""}
-          onChange={handleInputChange}
+          onChange={handleNestedInputChange}
         />
       </div>
       <div>
@@ -207,7 +274,7 @@ const Product = ({ product }: ProductProps) => {
           type="number"
           id="cholesterol"
           value={editableProduct.nutritionalValues?.cholesterol || ""}
-          onChange={handleInputChange}
+          onChange={handleNestedInputChange}
         />
       </div>
       <div>
@@ -219,7 +286,7 @@ const Product = ({ product }: ProductProps) => {
           type="number"
           id="sodium"
           value={editableProduct.nutritionalValues?.sodium || ""}
-          onChange={handleInputChange}
+          onChange={handleNestedInputChange}
         />
       </div>
       <div>
@@ -231,10 +298,36 @@ const Product = ({ product }: ProductProps) => {
           type="number"
           id="sugars"
           value={editableProduct.nutritionalValues?.sugars || ""}
-          onChange={handleInputChange}
+          onChange={handleNestedInputChange}
         />
       </div>
-
+      <div>
+        <label className={styles.label}>Ingredients:</label>
+        {editableProduct.nutritionalValues?.ingredients?.map(
+          (ingredient, index) => (
+            <div
+              style={{ display: "flex", gap: "5px", alignItems: "center" }}
+              key={index}
+            >
+              <input
+                className={styles.input}
+                type="text"
+                value={ingredient}
+                onChange={(e) => handleIngredientChange(e, index)}
+              />
+              <button
+                style={{ margin: "10px 0" }}
+                onClick={() => handleRemoveIngredient(index)}
+              >
+                הסרה
+              </button>
+            </div>
+          )
+        )}
+        <button style={{ margin: "10px 0" }} onClick={handleAddIngredient}>
+          הוסף רכיב
+        </button>
+      </div>
       <div className={styles.buttonContainer}>
         <button className={styles.button} onClick={handleSaveChanges}>
           שמור שינויים

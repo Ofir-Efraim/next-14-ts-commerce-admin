@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { nutritionalValues, product } from "@/app/types";
+import { newProduct, nutritionalValues, product } from "@/app/types";
 import styles from "./ProductForm.module.css";
 import Image from "next/image";
 type ProductFormProps = {
   onClose: () => void;
-  onSubmit: (newProduct: product) => void;
+  onSubmit: (newProduct: newProduct) => void;
 };
 
 const ProductForm = ({ onClose, onSubmit }: ProductFormProps) => {
   const initialNutritionalValues: nutritionalValues = {
-    ingredients: ["", ""],
+    ingredients: [""],
     servingSize: 0,
     calories: 0,
     caloriesFromFat: 0,
@@ -24,17 +24,16 @@ const ProductForm = ({ onClose, onSubmit }: ProductFormProps) => {
     sugars: 0,
   };
 
-  const initialProduct: product = {
+  const initialProduct: newProduct = {
     name: "",
     description: "",
     price: 0,
     picture: "",
-    id: "",
     active: true,
     nutritionalValues: initialNutritionalValues,
   };
 
-  const [newProduct, setNewProduct] = useState<product>(initialProduct);
+  const [newProduct, setNewProduct] = useState<newProduct>(initialProduct);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -45,7 +44,39 @@ const ProductForm = ({ onClose, onSubmit }: ProductFormProps) => {
       [id]: value,
     }));
   };
-
+  
+  const handlePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const selectedFile = event.target.files[0];
+      setNewProduct((prevProduct) => ({
+        ...prevProduct,
+        picture: selectedFile,
+      }));
+    }
+  };
+  const addIngredient = () => {
+    setNewProduct((prevProduct) => ({
+      ...prevProduct,
+      nutritionalValues: {
+        ...prevProduct.nutritionalValues,
+        ingredients: [...prevProduct.nutritionalValues.ingredients, ""],
+      },
+    }));
+  };
+  const handleIngredientChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const newIngredients = [...newProduct.nutritionalValues.ingredients];
+    newIngredients[index] = e.target.value;
+    setNewProduct((prevProduct) => ({
+      ...prevProduct,
+      nutritionalValues: {
+        ...prevProduct.nutritionalValues,
+        ingredients: newIngredients,
+      },
+    }));
+  };
   const handleNutritionalInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -114,7 +145,7 @@ const ProductForm = ({ onClose, onSubmit }: ProductFormProps) => {
             type="file"
             accept="image/*"
             id="picture"
-            // onChange={handlePictureChange}
+            onChange={handlePictureChange}
           />
         </div>
 
@@ -273,12 +304,25 @@ const ProductForm = ({ onClose, onSubmit }: ProductFormProps) => {
             onChange={handleNutritionalInputChange}
           />
         </div>
-
+        <div className={styles.inputContainer}>
+          <label className={styles.label}>רכיבים:</label>
+          {newProduct.nutritionalValues.ingredients.map((ingredient, index) => (
+            <input
+              key={index}
+              type="text"
+              value={ingredient}
+              onChange={(e) => handleIngredientChange(e, index)}
+            />
+          ))}
+          <button type="button" onClick={addIngredient}>
+            הוסף רכיב
+          </button>
+        </div>
         <div className={styles.buttonsContainer}>
           <button className={styles.button} type="submit">
             שמור
           </button>
-          <button className={styles.button} onClick={onClose}>
+          <button className={styles.button} type="button" onClick={onClose}>
             ביטול
           </button>
         </div>
