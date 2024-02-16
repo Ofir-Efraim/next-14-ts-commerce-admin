@@ -49,6 +49,20 @@ export default function Topbar() {
       >
         הזמנות
       </Link>
+      <Link
+        href="/clients"
+        style={
+          pathName === "/clients"
+            ? {
+                backgroundColor: "#555",
+                color: "#fff",
+              }
+            : {}
+        }
+        className={styles.link}
+      >
+        לקוחות
+      </Link>
     </nav>
   );
 }

@@ -74,3 +74,15 @@ export const deleteLocation = async (locationId: string) => {
 export const addLocation = async (locationName: string) => {
   return axios.post(server + "/add_location", { location_name: locationName });
 };
+export const getOrders = async () => {
+  return axios.get(server + "/get_orders");
+};
+export const deleteOrder = async (orderId: string) => {
+  return axios.delete(server + `/delete_order/${orderId}`);
+};
+export const getClients = async () => {
+  return axios.get(server + "/get_clients");
+};
+export const deleteClient = async (clientId: string) => {
+  return axios.delete(server + `/delete_client/${clientId}`);
+};

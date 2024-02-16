@@ -38,9 +38,9 @@ const OrdersTable = ({ orders, onDeleteOrder }: ordersTableProps) => {
           </TableHead>
           <TableBody>
             {orders.map((order) => (
-              <TableRow key={order.orderId}>
+              <TableRow key={order.id}>
                 <TableCell align="right">
-                  <IconButton onClick={() => onDeleteOrder(order.orderId)}>
+                  <IconButton onClick={() => onDeleteOrder(order.id)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
@@ -55,7 +55,7 @@ const OrdersTable = ({ orders, onDeleteOrder }: ordersTableProps) => {
                   </ul>
                 </TableCell>
                 <TableCell align="right">
-                  {order.pickupSpot ? order.pickupSpot : order.deliveryAddress}
+                  {order.pickupSpot ? order.pickupSpot : order.address}
                 </TableCell >
                 <TableCell align="right">{order.phoneNumber}</TableCell>
                 <TableCell align="right">{order.email}</TableCell>

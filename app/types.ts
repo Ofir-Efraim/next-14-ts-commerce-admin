@@ -27,22 +27,28 @@ export type location = {
   name: string;
   id: string;
 };
-export type orderItem = Omit<
-  product,
-  "nutritionalValues" | "description" | "picture"
-> & {
+export type orderItem = Omit<product, "nutritionalValues" | "description"> & {
   quantity: number;
   order_id: string;
 };
 
 export type order = {
-  orderId: string;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber: string;
   totalPrice: number;
   pickupSpot?: string;
-  deliveryAddress?: string;
+  address?: string;
   products: orderItem[];
+};
+export type client = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  email: string;
+  pickupSpot?: string;
+  address?: string;
 };
