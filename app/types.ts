@@ -42,6 +42,7 @@ export type order = {
   pickupSpot?: string;
   address?: string;
   products: orderItem[];
+  status: string;
 };
 export type client = {
   id: string;

@@ -77,8 +77,14 @@ export const addLocation = async (locationName: string) => {
 export const getOrders = async () => {
   return axios.get(server + "/get_orders");
 };
+export const getNewOrders = async () => {
+  return axios.get(server + "/get_new_orders");
+};
 export const deleteOrder = async (orderId: string) => {
   return axios.delete(server + `/delete_order/${orderId}`);
+};
+export const markOrderDelivered = async (orderId: string) => {
+  return axios.post(server + `/mark_order_delivered/${orderId}`);
 };
 export const getClients = async () => {
   return axios.get(server + "/get_clients");
