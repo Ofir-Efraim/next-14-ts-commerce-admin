@@ -58,7 +58,7 @@ const OrdersTable = ({
               sx={{
                 "& .MuiTableCell-root": {
                   border: "1px solid black",
-                  borderBottom:"3px solid #50C878",
+                  borderBottom: "3px solid #50C878",
                 },
               }}
             >
@@ -90,7 +90,7 @@ const OrdersTable = ({
                 sx={{
                   "& .MuiTableCell-root": {
                     border: "1px solid black",
-                    borderBottom:"3px solid #50C878"
+                    borderBottom: "3px solid #50C878",
                   },
                 }}
                 key={order.id}
@@ -146,7 +146,7 @@ const OrdersTable = ({
                 <TableCell align="right">{order.firstName}</TableCell>
                 <TableCell align="right">{order.date}</TableCell>
                 <TableCell align="right">
-                  {(currentPage - 1) * itemsPerPage + index + 1}
+                  {orders.length - (currentPage - 1) * itemsPerPage - index}
                 </TableCell>
               </TableRow>
             ))}
