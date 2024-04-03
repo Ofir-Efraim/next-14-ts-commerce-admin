@@ -43,6 +43,7 @@ export type order = {
   address?: string;
   products: orderItem[];
   status: string;
+  date: string;
 };
 export type client = {
   id: string;

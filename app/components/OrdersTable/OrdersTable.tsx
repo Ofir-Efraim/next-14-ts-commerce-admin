@@ -30,7 +30,7 @@ const OrdersTable = ({
 }: ordersTableProps) => {
   const [showOnlyNew, setShowOnlyNew] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(15);
+  const [itemsPerPage] = useState(10);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowOnlyNew(event.target.checked);
@@ -54,7 +54,14 @@ const OrdersTable = ({
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
-            <TableRow>
+            <TableRow
+              sx={{
+                "& .MuiTableCell-root": {
+                  border: "1px solid black",
+                  borderBottom:"3px solid #50C878",
+                },
+              }}
+            >
               <TableCell align="right">
                 <Checkbox
                   checked={showOnlyNew}
@@ -73,11 +80,21 @@ const OrdersTable = ({
               <TableCell align="right">אימייל</TableCell>
               <TableCell align="right">שם משפחה</TableCell>
               <TableCell align="right">שם פרטי</TableCell>
+              <TableCell align="right">תאריך הזמנה</TableCell>
+              <TableCell align="right">מספר הזמנה</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentOrders.map((order) => (
-              <TableRow key={order.id}>
+            {currentOrders.map((order, index) => (
+              <TableRow
+                sx={{
+                  "& .MuiTableCell-root": {
+                    border: "1px solid black",
+                    borderBottom:"3px solid #50C878"
+                  },
+                }}
+                key={order.id}
+              >
                 <TableCell align="right"></TableCell>
                 <TableCell align="right">
                   <IconButton onClick={() => onDeleteOrder(order.id)}>
@@ -85,9 +102,7 @@ const OrdersTable = ({
                   </IconButton>
                 </TableCell>
                 <TableCell align="right">
-                  <IconButton
-                    onClick={() => onMarkOrderDelivered(order.id)}
-                  >
+                  <IconButton onClick={() => onMarkOrderDelivered(order.id)}>
                     <LocalShippingIcon />
                   </IconButton>
                 </TableCell>
@@ -97,9 +112,27 @@ const OrdersTable = ({
                 <TableCell align="right">₪ {order.totalPrice} </TableCell>
                 <TableCell align="right">
                   <ul style={{ listStyle: "none" }}>
-                    {order.products.map((product: orderItem) => (
-                      <li key={product.id}>
-                        {product.quantity} x {product.name}
+                    {order.products.map((product: orderItem, index: number) => (
+                      <li
+                        key={product.id}
+                        style={{
+                          border: "1px solid #ccc",
+                          padding: "10px",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "20px",
+                            flexDirection: "row-reverse",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <span>{product.name}</span>
+                          <span>{product.quantity}</span>
+                        </div>
                       </li>
                     ))}
                   </ul>
@@ -111,6 +144,10 @@ const OrdersTable = ({
                 <TableCell align="right">{order.email}</TableCell>
                 <TableCell align="right">{order.lastName}</TableCell>
                 <TableCell align="right">{order.firstName}</TableCell>
+                <TableCell align="right">{order.date}</TableCell>
+                <TableCell align="right">
+                  {(currentPage - 1) * itemsPerPage + index + 1}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

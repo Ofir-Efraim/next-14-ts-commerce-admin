@@ -31,7 +31,14 @@ const ProductsTable = ({
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
-          <TableRow>
+          <TableRow
+            sx={{
+              "& .MuiTableCell-root": {
+                border: "1px solid black",
+                borderBottom: "3px solid #50C878",
+              },
+            }}
+          >
             <TableCell align="left"></TableCell>
             <TableCell align="center">פעיל</TableCell>
             <TableCell align="center">מחיר</TableCell>
@@ -41,7 +48,15 @@ const ProductsTable = ({
         </TableHead>
         <TableBody>
           {products.map((product) => (
-            <TableRow key={product.id}>
+            <TableRow
+              sx={{
+                "& .MuiTableCell-root": {
+                  border: "1px solid black",
+                  borderBottom: "3px solid #50C878",
+                },
+              }}
+              key={product.id}
+            >
               <TableCell align="left">
                 <IconButton onClick={() => onDelete(product.id)} color="error">
                   <DeleteIcon />

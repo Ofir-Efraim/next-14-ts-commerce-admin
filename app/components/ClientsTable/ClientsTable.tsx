@@ -24,7 +24,14 @@ const ClientsTable = ({ clients, onDeleteClient }: clientsTableProps) => {
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
-            <TableRow>
+            <TableRow
+              sx={{
+                "& .MuiTableCell-root": {
+                  border: "1px solid black",
+                  borderBottom: "3px solid #50C878",
+                },
+              }}
+            >
               <TableCell align="left"></TableCell>
               <TableCell align="right">נקודת איסוף / כתובת למשלוח</TableCell>
               <TableCell align="right">מספר טלפון</TableCell>
@@ -35,7 +42,15 @@ const ClientsTable = ({ clients, onDeleteClient }: clientsTableProps) => {
           </TableHead>
           <TableBody>
             {clients.map((client) => (
-              <TableRow key={client.id}>
+              <TableRow
+                sx={{
+                  "& .MuiTableCell-root": {
+                    border: "1px solid black",
+                    borderBottom: "3px solid #50C878",
+                  },
+                }}
+                key={client.id}
+              >
                 <TableCell align="right">
                   <IconButton onClick={() => onDeleteClient(client.id)}>
                     <DeleteIcon />
