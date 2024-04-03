@@ -28,7 +28,7 @@ const OrdersTable = ({
   onMarkOrderDelivered,
   setIsNew,
 }: ordersTableProps) => {
-  const [showOnlyNew, setShowOnlyNew] = useState(false);
+  const [showOnlyNew, setShowOnlyNew] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
