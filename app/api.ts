@@ -86,6 +86,9 @@ export const deleteOrder = async (orderId: string) => {
 export const markOrderDelivered = async (orderId: string) => {
   return axios.post(server + `/mark_order_delivered/${orderId}`);
 };
+export const markOrderNew = async (orderId: string) => {
+  return axios.post(server + `/mark_order_new/${orderId}`);
+};
 export const getClients = async () => {
   return axios.get(server + "/get_clients");
 };

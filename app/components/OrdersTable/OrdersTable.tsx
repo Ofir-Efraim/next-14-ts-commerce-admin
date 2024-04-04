@@ -18,14 +18,14 @@ import { order, orderItem } from "@/app/types";
 type ordersTableProps = {
   orders: order[];
   onDeleteOrder: (orderId: string) => void;
-  onMarkOrderDelivered: (orderId: string) => void;
+  onToggleOrderStatus: (orderId: string, status: string) => void;
   setIsNew: Dispatch<SetStateAction<boolean>>;
 };
 
 const OrdersTable = ({
   orders,
   onDeleteOrder,
-  onMarkOrderDelivered,
+  onToggleOrderStatus,
   setIsNew,
 }: ordersTableProps) => {
   const [showOnlyNew, setShowOnlyNew] = useState(true);
@@ -35,6 +35,7 @@ const OrdersTable = ({
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowOnlyNew(event.target.checked);
     setIsNew(event.target.checked);
+    setCurrentPage(1);
   };
 
   const lastIndex = currentPage * itemsPerPage;
@@ -71,7 +72,7 @@ const OrdersTable = ({
                 הצג רק הזמנות חדשות
               </TableCell>
               <TableCell align="right">מחק</TableCell>
-              <TableCell align="right">סמן כסופק</TableCell>
+              <TableCell align="right">סמן כסופק/חדש </TableCell>
               <TableCell align="right">סטטוס</TableCell>
               <TableCell align="right">סכום כולל</TableCell>
               <TableCell align="right">מוצרים</TableCell>
@@ -102,8 +103,14 @@ const OrdersTable = ({
                   </IconButton>
                 </TableCell>
                 <TableCell align="right">
-                  <IconButton onClick={() => onMarkOrderDelivered(order.id)}>
-                    <LocalShippingIcon />
+                  <IconButton
+                    onClick={() => onToggleOrderStatus(order.id, order.status)}
+                  >
+                    <LocalShippingIcon
+                      style={{
+                        color: order.status === "new" ? "green" : "blue",
+                      }}
+                    />
                   </IconButton>
                 </TableCell>
                 <TableCell align="right">

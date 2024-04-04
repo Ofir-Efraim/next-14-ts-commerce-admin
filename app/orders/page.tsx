@@ -7,11 +7,12 @@ import {
   getNewOrders,
   getOrders,
   markOrderDelivered,
+  markOrderNew,
 } from "../api";
 
 export default function Home() {
   const [orders, setorders] = useState<order[]>([]);
-  const [isNew, setIsNew] = useState<boolean>(false);
+  const [isNew, setIsNew] = useState<boolean>(true);
   const fetchorders = async () => {
     let res = null;
     if (isNew) {
@@ -29,8 +30,12 @@ export default function Home() {
     await deleteOrder(orderId);
     fetchorders();
   };
-  const handleMarkOrderDelivered = async (orderId: string) => {
-    await markOrderDelivered(orderId);
+  const handleToggleOrderStatus = async (orderId: string, status: string) => {
+    if (status === "new") {
+      await markOrderDelivered(orderId);
+    } else {
+      await markOrderNew(orderId);
+    }
     fetchorders();
   };
 
@@ -39,7 +44,7 @@ export default function Home() {
       <OrdersTable
         orders={orders}
         onDeleteOrder={handleDeleteOrder}
-        onMarkOrderDelivered={handleMarkOrderDelivered}
+        onToggleOrderStatus={handleToggleOrderStatus}
         setIsNew={setIsNew}
       />
     </main>
