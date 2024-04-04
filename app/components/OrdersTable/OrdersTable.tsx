@@ -10,16 +10,19 @@ import {
   IconButton,
   Checkbox,
   Pagination,
+  Popover,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import { order, orderItem } from "@/app/types";
+import { Refresh } from "@mui/icons-material";
 
 type ordersTableProps = {
   orders: order[];
   onDeleteOrder: (orderId: string) => void;
   onToggleOrderStatus: (orderId: string, status: string) => void;
   setIsNew: Dispatch<SetStateAction<boolean>>;
+  fetchorders: () => void;
 };
 
 const OrdersTable = ({
@@ -27,10 +30,20 @@ const OrdersTable = ({
   onDeleteOrder,
   onToggleOrderStatus,
   setIsNew,
+  fetchorders,
 }: ordersTableProps) => {
   const [showOnlyNew, setShowOnlyNew] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [clicked, setClicked] = useState(false);
+
+  const handleRefreshClick = () => {
+    setClicked(true);
+    fetchorders();
+    setTimeout(() => {
+      setClicked(false);
+    }, 200);
+  };
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowOnlyNew(event.target.checked);
@@ -52,6 +65,38 @@ const OrdersTable = ({
   return (
     <div style={{ margin: "10px 40px" }}>
       <h1 style={{ textAlign: "center" }}>הזמנות</h1>
+
+      <Popover
+        open={clicked}
+        anchorReference="none"
+        anchorOrigin={{
+          vertical: "center",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "center",
+          horizontal: "center",
+        }}
+        style={{
+          padding: "20px",
+          textAlign: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "rgba(255,255,255,0.6)",
+        }}
+      >
+        <div
+          style={{
+            margin: "0 auto",
+            fontSize: "28px",
+            padding: "30px",
+          }}
+        >
+          ... מעדכן הזמנות
+        </div>
+      </Popover>
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -83,6 +128,14 @@ const OrdersTable = ({
               <TableCell align="right">שם פרטי</TableCell>
               <TableCell align="right">תאריך הזמנה</TableCell>
               <TableCell align="right">מספר הזמנה</TableCell>
+              <TableCell align="right">
+                <Refresh
+                  onClick={handleRefreshClick}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                />
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

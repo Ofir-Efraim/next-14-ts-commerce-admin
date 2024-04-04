@@ -46,6 +46,7 @@ export default function Home() {
         onDeleteOrder={handleDeleteOrder}
         onToggleOrderStatus={handleToggleOrderStatus}
         setIsNew={setIsNew}
+        fetchorders={fetchorders}
       />
     </main>
   );
