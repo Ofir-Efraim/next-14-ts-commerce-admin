@@ -74,11 +74,13 @@ export const deleteLocation = async (locationId: string) => {
 export const addLocation = async (locationName: string) => {
   return axios.post(server + "/add_location", { location_name: locationName });
 };
-export const getOrders = async () => {
-  return axios.get(server + "/get_orders");
+export const getOrders = async (page: number, rows_per_page: number) => {
+  return axios.get(server + "/get_orders", { params: { page, rows_per_page } });
 };
-export const getNewOrders = async () => {
-  return axios.get(server + "/get_new_orders");
+export const getNewOrders = async (page: number, rows_per_page: number) => {
+  return axios.get(server + "/get_new_orders", {
+    params: { page, rows_per_page },
+  });
 };
 export const deleteOrder = async (orderId: string) => {
   return axios.delete(server + `/delete_order/${orderId}`);
@@ -89,8 +91,16 @@ export const markOrderDelivered = async (orderId: string) => {
 export const markOrderNew = async (orderId: string) => {
   return axios.post(server + `/mark_order_new/${orderId}`);
 };
-export const getClients = async () => {
-  return axios.get(server + "/get_clients");
+export const markOrderPaid = async (orderId: string) => {
+  return axios.post(server + `/mark_order_paid/${orderId}`);
+};
+export const markOrderUnpaid = async (orderId: string) => {
+  return axios.post(server + `/mark_order_unpaid/${orderId}`);
+};
+export const getClients = async (page: number, rows_per_page: number) => {
+  return axios.get(server + "/get_clients", {
+    params: { page, rows_per_page },
+  });
 };
 export const deleteClient = async (clientId: string) => {
   return axios.delete(server + `/delete_client/${clientId}`);

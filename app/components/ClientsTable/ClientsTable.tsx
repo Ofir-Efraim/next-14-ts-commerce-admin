@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import {
   Table,
   TableBody,
@@ -8,16 +8,34 @@ import {
   TableRow,
   Paper,
   IconButton,
+  Pagination,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { client } from "@/app/types";
 
 type clientsTableProps = {
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
+  rows_per_page: number;
+  totalClients: number;
   clients: client[];
   onDeleteClient: (clientId: string) => void;
 };
 
-const ClientsTable = ({ clients, onDeleteClient }: clientsTableProps) => {
+const ClientsTable = ({
+  page,
+  setPage,
+  rows_per_page,
+  totalClients,
+  clients,
+  onDeleteClient,
+}: clientsTableProps) => {
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
   return (
     <div style={{ margin: "10px 40px" }}>
       <h1 style={{ textAlign: "center" }}>לקוחות</h1>
@@ -74,6 +92,12 @@ const ClientsTable = ({ clients, onDeleteClient }: clientsTableProps) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Pagination
+        count={Math.ceil(totalClients / rows_per_page)}
+        page={page}
+        onChange={handlePageChange}
+        style={{ marginTop: "20px", textAlign: "center" }}
+      />
     </div>
   );
 };

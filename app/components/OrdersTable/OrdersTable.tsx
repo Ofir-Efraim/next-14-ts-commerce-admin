@@ -15,31 +15,39 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import { order, orderItem } from "@/app/types";
-import { Refresh } from "@mui/icons-material";
+import { Paid, Refresh } from "@mui/icons-material";
 
 type ordersTableProps = {
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
+  rows_per_page: number;
+  totalOrders: number;
   orders: order[];
   onDeleteOrder: (orderId: string) => void;
   onToggleOrderStatus: (orderId: string, status: string) => void;
+  onToggleOrderPaid: (orderId: string, paid: boolean) => void;
   setIsNew: Dispatch<SetStateAction<boolean>>;
   fetchorders: () => void;
 };
 
 const OrdersTable = ({
+  page,
+  setPage,
+  rows_per_page,
+  totalOrders,
   orders,
   onDeleteOrder,
   onToggleOrderStatus,
+  onToggleOrderPaid,
   setIsNew,
   fetchorders,
 }: ordersTableProps) => {
   const [showOnlyNew, setShowOnlyNew] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
   const [clicked, setClicked] = useState(false);
 
   const handleRefreshClick = () => {
     setClicked(true);
-    fetchorders();
+    setPage(1);
     setTimeout(() => {
       setClicked(false);
     }, 200);
@@ -48,18 +56,14 @@ const OrdersTable = ({
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowOnlyNew(event.target.checked);
     setIsNew(event.target.checked);
-    setCurrentPage(1);
+    setPage(1);
   };
-
-  const lastIndex = currentPage * itemsPerPage;
-  const firstIndex = lastIndex - itemsPerPage;
-  const currentOrders = orders.slice(firstIndex, lastIndex);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    setCurrentPage(value);
+    setPage(value);
   };
 
   return (
@@ -117,8 +121,10 @@ const OrdersTable = ({
                 הצג רק הזמנות חדשות
               </TableCell>
               <TableCell align="right">מחק</TableCell>
-              <TableCell align="right">סמן כסופק/חדש </TableCell>
-              <TableCell align="right">סטטוס</TableCell>
+              <TableCell align="right">סמן כשולם/לא שולם </TableCell>
+              <TableCell align="right">סטטוס תשלום</TableCell>
+              <TableCell align="right">סמן כסופקה/חדשה </TableCell>
+              <TableCell align="right">סטטוס הזמנה</TableCell>
               <TableCell align="right">סכום כולל</TableCell>
               <TableCell align="right">מוצרים</TableCell>
               <TableCell align="right">נקודת איסוף / כתובת למשלוח</TableCell>
@@ -139,7 +145,7 @@ const OrdersTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentOrders.map((order, index) => (
+            {orders.map((order, index) => (
               <TableRow
                 sx={{
                   "& .MuiTableCell-root": {
@@ -157,6 +163,20 @@ const OrdersTable = ({
                 </TableCell>
                 <TableCell align="right">
                   <IconButton
+                    onClick={() => onToggleOrderPaid(order.id, order.paid)}
+                  >
+                    <Paid
+                      style={{
+                        color: order.paid ? "green" : "red",
+                      }}
+                    />
+                  </IconButton>
+                </TableCell>
+                <TableCell align="right">
+                  {order.paid ? "שולם" : "לא שולם"}
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton
                     onClick={() => onToggleOrderStatus(order.id, order.status)}
                   >
                     <LocalShippingIcon
@@ -167,7 +187,7 @@ const OrdersTable = ({
                   </IconButton>
                 </TableCell>
                 <TableCell align="right">
-                  {order.status === "new" ? "חדש" : "סופק"}
+                  {order.status === "new" ? "חדשה" : "סופקה"}
                 </TableCell>
                 <TableCell align="right">₪ {order.totalPrice} </TableCell>
                 <TableCell align="right">
@@ -206,7 +226,7 @@ const OrdersTable = ({
                 <TableCell align="right">{order.firstName}</TableCell>
                 <TableCell align="right">{order.date}</TableCell>
                 <TableCell align="right">
-                  {orders.length - (currentPage - 1) * itemsPerPage - index}
+                  {totalOrders - (page - 1) * rows_per_page - index}
                 </TableCell>
               </TableRow>
             ))}
@@ -214,8 +234,8 @@ const OrdersTable = ({
         </Table>
       </TableContainer>
       <Pagination
-        count={Math.ceil(orders.length / itemsPerPage)}
-        page={currentPage}
+        count={Math.ceil(totalOrders / rows_per_page)}
+        page={page}
         onChange={handlePageChange}
         style={{ marginTop: "20px", textAlign: "center" }}
       />
