@@ -97,9 +97,13 @@ export const markOrderPaid = async (orderId: string) => {
 export const markOrderUnpaid = async (orderId: string) => {
   return axios.post(server + `/mark_order_unpaid/${orderId}`);
 };
-export const getClients = async (page: number, rows_per_page: number) => {
+export const getClients = async (
+  page: number,
+  rows_per_page: number,
+  search: string
+) => {
   return axios.get(server + "/get_clients", {
-    params: { page, rows_per_page },
+    params: { page, rows_per_page, search },
   });
 };
 export const deleteClient = async (clientId: string) => {

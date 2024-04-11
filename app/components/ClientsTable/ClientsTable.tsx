@@ -1,4 +1,5 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useMemo } from "react";
+import debounce from "lodash.debounce";
 import {
   Table,
   TableBody,
@@ -18,6 +19,8 @@ type clientsTableProps = {
   setPage: Dispatch<SetStateAction<number>>;
   rows_per_page: number;
   totalClients: number;
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
   clients: client[];
   onDeleteClient: (clientId: string) => void;
 };
@@ -27,6 +30,8 @@ const ClientsTable = ({
   setPage,
   rows_per_page,
   totalClients,
+  search,
+  setSearch,
   clients,
   onDeleteClient,
 }: clientsTableProps) => {
@@ -36,9 +41,29 @@ const ClientsTable = ({
   ) => {
     setPage(value);
   };
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    setPage(1);
+  };
+
   return (
     <div style={{ margin: "10px 40px" }}>
       <h1 style={{ textAlign: "center" }}>לקוחות</h1>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <input
+          type="text"
+          style={{ width: "40%", margin: "10px 0", direction: "rtl" }}
+          value={search}
+          onChange={handleSearch}
+        />
+      </div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
