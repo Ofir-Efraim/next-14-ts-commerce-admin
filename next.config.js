@@ -9,8 +9,7 @@ const nextConfig = {
     ],
   },
   env: {
-    // SERVER_ENDPOINT: "https://wky58fywke.execute-api.eu-west-1.amazonaws.com/dev",
-    SERVER_ENDPOINT: "http://127.0.0.1:5000",
+    SERVER_ENDPOINT: "https://wky58fywke.execute-api.eu-west-1.amazonaws.com/dev",
   },
 };
 
