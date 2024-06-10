@@ -60,7 +60,7 @@ const CustomFilter = ({
         onClose={handleClose}
       >
         {queryOptions.map((option) => (
-          <MenuItem>
+          <MenuItem key={option.label}>
             <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
               <Checkbox
                 value={option.value}
