@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -8,14 +8,15 @@ import {
   TableRow,
   Paper,
   IconButton,
-  Checkbox,
   Pagination,
   Popover,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import { order, orderItem } from "@/app/types";
+import { location, order, orderItem } from "@/app/types";
 import { Paid, Refresh } from "@mui/icons-material";
+import CustomFilter from "./CustomFilter/CustomFilter";
+import { getLocations } from "@/app/api";
 
 type ordersTableProps = {
   page: number;
@@ -23,11 +24,13 @@ type ordersTableProps = {
   rows_per_page: number;
   totalOrders: number;
   orders: order[];
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
   onDeleteOrder: (orderId: string) => void;
   onToggleOrderStatus: (orderId: string, status: string) => void;
   onToggleOrderPaid: (orderId: string, paid: boolean) => void;
-  setIsNew: Dispatch<SetStateAction<boolean>>;
-  fetchorders: () => void;
+  handleAddQuery: (queryKey: string, queryValue: string) => void;
+  handleRemoveQuery: (queryKey: string, queryValue?: string) => void;
 };
 
 const OrdersTable = ({
@@ -36,15 +39,25 @@ const OrdersTable = ({
   rows_per_page,
   totalOrders,
   orders,
+  search,
+  setSearch,
   onDeleteOrder,
   onToggleOrderStatus,
   onToggleOrderPaid,
-  setIsNew,
-  fetchorders,
+  handleAddQuery,
+  handleRemoveQuery,
 }: ordersTableProps) => {
-  const [showOnlyNew, setShowOnlyNew] = useState(true);
   const [clicked, setClicked] = useState(false);
-
+  const [statusAnchorEl, setStatusAnchorEl] = useState<HTMLElement | null>(
+    null
+  );
+  const [pickupSpotAnchorEl, setPickupSpotAnchorEl] =
+    useState<HTMLElement | null>(null);
+  const [status, setStatus] = useState<string[]>([]);
+  const [pickupSpot, setPickupSpot] = useState<string[]>([]);
+  const [locations, setLocations] = useState<location[]>([]);
+  const [paidAnchorEl, setPaidAnchorEl] = useState<HTMLElement | null>(null);
+  const [paid, setPaid] = useState<string[]>([]);
   const handleRefreshClick = () => {
     setClicked(true);
     setPage(1);
@@ -52,10 +65,27 @@ const OrdersTable = ({
       setClicked(false);
     }, 200);
   };
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    setPage(1);
+  };
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setShowOnlyNew(event.target.checked);
-    setIsNew(event.target.checked);
+  const fetchLocations = async () => {
+    const res = await getLocations();
+    setLocations(res.data.locations);
+  };
+  const handleCheckboxChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    queryKey: string
+  ) => {
+    const value = event.target.value;
+    const checked = event.target.checked;
+    if (checked) {
+      handleAddQuery(queryKey, value);
+    } else {
+      handleRemoveQuery(queryKey, value);
+    }
+
     setPage(1);
   };
 
@@ -65,11 +95,12 @@ const OrdersTable = ({
   ) => {
     setPage(value);
   };
-
+  useEffect(() => {
+    fetchLocations();
+  }, []);
   return (
     <div style={{ margin: "10px 40px" }}>
       <h1 style={{ textAlign: "center" }}>הזמנות</h1>
-
       <Popover
         open={clicked}
         anchorReference="none"
@@ -100,7 +131,68 @@ const OrdersTable = ({
           ... מעדכן הזמנות
         </div>
       </Popover>
-
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <input
+          type="text"
+          style={{ width: "40%", margin: "10px 0", direction: "rtl" }}
+          value={search}
+          onChange={handleSearch}
+        />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <CustomFilter
+          buttonLabel="סינון לפי סטטוס הזמנה"
+          tracker={status}
+          setTracker={setStatus}
+          anchorEl={statusAnchorEl}
+          setAnchorEl={setStatusAnchorEl}
+          handleCheckboxChange={handleCheckboxChange}
+          queryKey="status"
+          queryOptions={[
+            { label: "הצג הזמנות חדשות", value: "new" },
+            { label: "הצג הזמנות שסופקו", value: "delivered" },
+          ]}
+        />
+        <CustomFilter
+          buttonLabel="סינון לפי שוק"
+          tracker={pickupSpot}
+          setTracker={setPickupSpot}
+          anchorEl={pickupSpotAnchorEl}
+          setAnchorEl={setPickupSpotAnchorEl}
+          handleCheckboxChange={handleCheckboxChange}
+          queryKey="pickupSpot"
+          queryOptions={locations.map((location) => ({
+            label: location.name,
+            value: location.name,
+          }))}
+        />
+        <CustomFilter
+          buttonLabel="סינון לפי תשלום"
+          tracker={paid}
+          setTracker={setPaid}
+          anchorEl={paidAnchorEl}
+          setAnchorEl={setPaidAnchorEl}
+          handleCheckboxChange={handleCheckboxChange}
+          queryKey="paid"
+          queryOptions={[
+            { label: "הצג הזמנות ששולמו", value: "true" },
+            { label: "הצג הזמנות שלא שולמו", value: "false" },
+          ]}
+        />
+      </div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -112,14 +204,6 @@ const OrdersTable = ({
                 },
               }}
             >
-              <TableCell align="right">
-                <Checkbox
-                  checked={showOnlyNew}
-                  onChange={handleCheckboxChange}
-                  color="primary"
-                />
-                הצג רק הזמנות חדשות
-              </TableCell>
               <TableCell align="right">מחק</TableCell>
               <TableCell align="right">סמן כשולם/לא שולם </TableCell>
               <TableCell align="right">סטטוס תשלום</TableCell>
@@ -155,7 +239,6 @@ const OrdersTable = ({
                 }}
                 key={order.id}
               >
-                <TableCell align="right"></TableCell>
                 <TableCell align="right">
                   <IconButton onClick={() => onDeleteOrder(order.id)}>
                     <DeleteIcon />

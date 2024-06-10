@@ -55,3 +55,6 @@ export type client = {
   pickupSpot?: string;
   address?: string;
 };
+export type Query = {
+  [key: string]: string[];
+};

@@ -74,12 +74,15 @@ export const deleteLocation = async (locationId: string) => {
 export const addLocation = async (locationName: string) => {
   return axios.post(server + "/add_location", { location_name: locationName });
 };
-export const getOrders = async (page: number, rows_per_page: number) => {
-  return axios.get(server + "/get_orders", { params: { page, rows_per_page } });
-};
-export const getNewOrders = async (page: number, rows_per_page: number) => {
-  return axios.get(server + "/get_new_orders", {
-    params: { page, rows_per_page },
+export const getOrders = async (
+  page: number,
+  rows_per_page: number,
+  query: object,
+  search: string
+) => {
+  const queryToSend = JSON.stringify(query);
+  return axios.get(server + "/get_orders", {
+    params: { page, rows_per_page, query: queryToSend, search },
   });
 };
 export const deleteOrder = async (orderId: string) => {
