@@ -224,7 +224,7 @@ const OrdersTable = ({
               }}
             >
               <TableCell align="right">מחק</TableCell>
-              <TableCell align="right">סמן כהוכן/לא הוכן </TableCell>
+              <TableCell align="right">סמן כהוכנה/לא הוכנה </TableCell>
               <TableCell align="right">סטטוס שקית</TableCell>
               <TableCell align="right">סמן כשולם/לא שולם </TableCell>
               <TableCell align="right">סטטוס תשלום</TableCell>
