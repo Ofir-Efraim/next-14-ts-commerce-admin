@@ -9,6 +9,8 @@ import {
   markOrderNew,
   markOrderPaid,
   markOrderUnpaid,
+  markOrderBagged,
+  markOrderUnbagged,
 } from "../api";
 
 export default function Home() {
@@ -37,6 +39,14 @@ export default function Home() {
       await markOrderDelivered(orderId);
     } else {
       await markOrderNew(orderId);
+    }
+    fetchorders();
+  };
+  const handleToggleOrderBagged = async (orderId: string, bagged: boolean) => {
+    if (bagged) {
+      await markOrderUnbagged(orderId);
+    } else {
+      await markOrderBagged(orderId);
     }
     fetchorders();
   };
@@ -99,6 +109,7 @@ export default function Home() {
         orders={orders}
         onDeleteOrder={handleDeleteOrder}
         onToggleOrderStatus={handleToggleOrderStatus}
+        onToggleOrderBagged={handleToggleOrderBagged}
         onToggleOrderPaid={handleToggleOrderPaid}
         handleAddQuery={handleAddQuery}
         handleRemoveQuery={handleRemoveQuery}

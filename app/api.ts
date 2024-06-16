@@ -94,6 +94,12 @@ export const markOrderDelivered = async (orderId: string) => {
 export const markOrderNew = async (orderId: string) => {
   return axios.post(server + `/mark_order_new/${orderId}`);
 };
+export const markOrderBagged = async (orderId: string) => {
+  return axios.post(server + `/mark_order_bagged/${orderId}`);
+};
+export const markOrderUnbagged = async (orderId: string) => {
+  return axios.post(server + `/mark_order_unbagged/${orderId}`);
+};
 export const markOrderPaid = async (orderId: string) => {
   return axios.post(server + `/mark_order_paid/${orderId}`);
 };

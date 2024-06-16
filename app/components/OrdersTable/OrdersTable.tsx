@@ -14,7 +14,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import { location, order, orderItem } from "@/app/types";
-import { Paid, Refresh } from "@mui/icons-material";
+import { Paid, Refresh, ShoppingBag } from "@mui/icons-material";
 import CustomFilter from "./CustomFilter/CustomFilter";
 import { getLocations } from "@/app/api";
 
@@ -28,6 +28,7 @@ type ordersTableProps = {
   setSearch: Dispatch<SetStateAction<string>>;
   onDeleteOrder: (orderId: string) => void;
   onToggleOrderStatus: (orderId: string, status: string) => void;
+  onToggleOrderBagged: (orderId: string, bagged: boolean) => void;
   onToggleOrderPaid: (orderId: string, paid: boolean) => void;
   handleAddQuery: (queryKey: string, queryValue: string) => void;
   handleRemoveQuery: (queryKey: string, queryValue?: string) => void;
@@ -43,6 +44,7 @@ const OrdersTable = ({
   setSearch,
   onDeleteOrder,
   onToggleOrderStatus,
+  onToggleOrderBagged,
   onToggleOrderPaid,
   handleAddQuery,
   handleRemoveQuery,
@@ -58,6 +60,10 @@ const OrdersTable = ({
   const [locations, setLocations] = useState<location[]>([]);
   const [paidAnchorEl, setPaidAnchorEl] = useState<HTMLElement | null>(null);
   const [paid, setPaid] = useState<string[]>([]);
+  const [baggedAnchorEl, setBaggedAnchorEl] = useState<HTMLElement | null>(
+    null
+  );
+  const [bagged, setBagged] = useState<string[]>([]);
   const handleRefreshClick = () => {
     setClicked(true);
     setPage(1);
@@ -192,6 +198,19 @@ const OrdersTable = ({
             { label: "הצג הזמנות שלא שולמו", value: "false" },
           ]}
         />
+        <CustomFilter
+          buttonLabel="סינון לפי שקית"
+          tracker={bagged}
+          setTracker={setBagged}
+          anchorEl={baggedAnchorEl}
+          setAnchorEl={setBaggedAnchorEl}
+          handleCheckboxChange={handleCheckboxChange}
+          queryKey="bagged"
+          queryOptions={[
+            { label: "הצג הזמנות שהוכנה שקית", value: "true" },
+            { label: "הצג הזמנות שלא הוכנה שקית", value: "false" },
+          ]}
+        />
       </div>
       <TableContainer component={Paper}>
         <Table>
@@ -205,6 +224,8 @@ const OrdersTable = ({
               }}
             >
               <TableCell align="right">מחק</TableCell>
+              <TableCell align="right">סמן כהוכן/לא הוכן </TableCell>
+              <TableCell align="right">סטטוס שקית</TableCell>
               <TableCell align="right">סמן כשולם/לא שולם </TableCell>
               <TableCell align="right">סטטוס תשלום</TableCell>
               <TableCell align="right">סמן כסופקה/חדשה </TableCell>
@@ -243,6 +264,20 @@ const OrdersTable = ({
                   <IconButton onClick={() => onDeleteOrder(order.id)}>
                     <DeleteIcon />
                   </IconButton>
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    onClick={() => onToggleOrderBagged(order.id, order.bagged)}
+                  >
+                    <ShoppingBag
+                      style={{
+                        color: order.bagged ? "green" : "red",
+                      }}
+                    />
+                  </IconButton>
+                </TableCell>
+                <TableCell align="right">
+                  {order.bagged ? "הוכנה שקית" : "לא הוכנה שקית"}
                 </TableCell>
                 <TableCell align="right">
                   <IconButton
