@@ -27,6 +27,7 @@ type ordersTableProps = {
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
   onDeleteOrder: (orderId: string) => void;
+  fetchorders: () => void;
   onToggleOrderStatus: (orderId: string, status: string) => void;
   onToggleOrderBagged: (orderId: string, bagged: boolean) => void;
   onToggleOrderPaid: (orderId: string, paid: boolean) => void;
@@ -44,6 +45,7 @@ const OrdersTable = ({
   setSearch,
   onDeleteOrder,
   onToggleOrderStatus,
+  fetchorders,
   onToggleOrderBagged,
   onToggleOrderPaid,
   handleAddQuery,
@@ -66,7 +68,11 @@ const OrdersTable = ({
   const [bagged, setBagged] = useState<string[]>([]);
   const handleRefreshClick = () => {
     setClicked(true);
-    setPage(1);
+    if (page !== 1) {
+      setPage(1);
+    } else {
+      fetchorders();
+    }
     setTimeout(() => {
       setClicked(false);
     }, 200);

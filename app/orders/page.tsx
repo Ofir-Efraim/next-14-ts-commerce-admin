@@ -113,6 +113,7 @@ export default function Home() {
         onToggleOrderPaid={handleToggleOrderPaid}
         handleAddQuery={handleAddQuery}
         handleRemoveQuery={handleRemoveQuery}
+        fetchorders={fetchorders}
       />
     </main>
   );
