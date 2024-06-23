@@ -33,6 +33,7 @@ type ordersTableProps = {
   onToggleOrderPaid: (orderId: string, paid: boolean) => void;
   handleAddQuery: (queryKey: string, queryValue: string) => void;
   handleRemoveQuery: (queryKey: string, queryValue?: string) => void;
+  sumPrice: number;
 };
 
 const OrdersTable = ({
@@ -50,6 +51,7 @@ const OrdersTable = ({
   onToggleOrderPaid,
   handleAddQuery,
   handleRemoveQuery,
+  sumPrice,
 }: ordersTableProps) => {
   const [clicked, setClicked] = useState(false);
   const [statusAnchorEl, setStatusAnchorEl] = useState<HTMLElement | null>(
@@ -113,6 +115,7 @@ const OrdersTable = ({
   return (
     <div style={{ margin: "10px 40px" }}>
       <h1 style={{ textAlign: "center" }}>הזמנות</h1>
+      <p>מחיר כולל {sumPrice?.toLocaleString()} שקלים</p>
       <Popover
         open={clicked}
         anchorReference="none"

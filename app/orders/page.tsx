@@ -15,6 +15,7 @@ import {
 
 export default function Home() {
   const [orders, setorders] = useState<order[]>([]);
+  const [sumPrice, setSumPrice] = useState<number>(0);
   const [totalOrders, setTotalOrders] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
   const [query, setQuery] = useState<Query>({});
@@ -25,6 +26,7 @@ export default function Home() {
     res = await getOrders(page, rows_per_page, query, search);
     setorders(res.data.orders);
     setTotalOrders(res.data.total);
+    setSumPrice(res.data.sum_price);
   };
   useEffect(() => {
     fetchorders();
@@ -114,6 +116,7 @@ export default function Home() {
         handleAddQuery={handleAddQuery}
         handleRemoveQuery={handleRemoveQuery}
         fetchorders={fetchorders}
+        sumPrice={sumPrice}
       />
     </main>
   );
