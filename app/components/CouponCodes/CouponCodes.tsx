@@ -20,8 +20,8 @@ type couponCodesProps = {
 const CouponCodes = ({ couponCodes, fetchCouponCodes }: couponCodesProps) => {
   const [isAddCouponCodeFormOpen, setIsAddCouponCodeFormOpen] = useState(false);
 
-  const handleAddCouponCode = async (newCouponCodeName: string) => {
-    await addCouponCode(newCouponCodeName);
+  const handleAddCouponCode = async (newCouponCodeName: string, newDiscountPercentage : number) => {
+    await addCouponCode(newCouponCodeName, newDiscountPercentage);
     fetchCouponCodes();
     setIsAddCouponCodeFormOpen(false);
   };

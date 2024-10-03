@@ -29,6 +29,7 @@ export type location = {
 };
 export type couponCode = {
   coupon_code : string;
+  discount_percentage : number;
   id : string;
   active : boolean;
 }

@@ -14,28 +14,33 @@ import styles from "./CouponCodesList.module.css"; // Adjust the import path bas
 type couponCodesListListProps = {
   couponCodes: couponCode[];
   onRemoveCouponCode: (couponCodeId: string) => void;
-  onToggleCouponCodeActive : (couponCodeId: string) => void;
+  onToggleCouponCodeActive: (couponCodeId: string) => void;
 };
 
 const CouponCodesList: React.FC<couponCodesListListProps> = ({
   couponCodes,
   onRemoveCouponCode,
-  onToggleCouponCodeActive
+  onToggleCouponCodeActive,
 }) => {
   return (
     <List>
       {couponCodes.map((couponCode) => (
         <div key={couponCode.id} className={styles.listItemContainer}>
           <ListItem>
+          <Switch
+              checked={couponCode.active}
+              onChange={() => onToggleCouponCodeActive(couponCode.id)}
+              color="primary"
+            />
+            <ListItemText
+              primary={`${couponCode.discount_percentage}%`}
+              primaryTypographyProps={{ style: { textAlign: "right" } }}
+            />
             <ListItemText
               primary={couponCode.coupon_code}
               primaryTypographyProps={{ style: { textAlign: "right" } }}
             />
-             <Switch
-                  checked={couponCode.active}
-                  onChange={() => onToggleCouponCodeActive(couponCode.id)}
-                  color="primary"
-                />
+
             <IconButton
               className={styles.deleteButton}
               onClick={() => onRemoveCouponCode(couponCode.id)}
