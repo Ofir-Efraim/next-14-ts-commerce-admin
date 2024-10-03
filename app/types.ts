@@ -27,6 +27,11 @@ export type location = {
   name: string;
   id: string;
 };
+export type couponCode = {
+  coupon_code : string;
+  id : string;
+  active : boolean;
+}
 export type orderItem = Omit<product, "nutritionalValues" | "description"> & {
   quantity: number;
   order_id: string;

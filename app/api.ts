@@ -118,3 +118,15 @@ export const getClients = async (
 export const deleteClient = async (clientId: string) => {
   return axios.delete(server + `/delete_client/${clientId}`);
 };
+export const getCouponCodes = async () => {
+  return axios.get(server + "/get_coupon_codes");
+};
+export const addCouponCode = async (couponCode: string) => {
+  return axios.post(server + "/add_coupon_code", { coupon_code: couponCode });
+};
+export const deleteCouponCode = async (couponCodeId: string) => {
+  return axios.delete(server + `/delete_coupon_code/${couponCodeId}`);
+};
+export const toggleCouponCodeActive = async (couponCodeId: string) => {
+  return axios.post(server + `/toggle_coupon_code_active/${couponCodeId}`);
+};

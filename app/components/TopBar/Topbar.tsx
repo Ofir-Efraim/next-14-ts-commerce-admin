@@ -63,6 +63,20 @@ export default function Topbar() {
       >
         לקוחות
       </Link>
+      <Link
+        href="/couponCodes"
+        style={
+          pathName === "/couponCodes"
+            ? {
+                backgroundColor: "#555",
+                color: "#fff",
+              }
+            : {}
+        }
+        className={styles.link}
+      >
+        קודי קופון
+      </Link>
     </nav>
   );
 }
