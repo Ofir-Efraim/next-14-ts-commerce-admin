@@ -36,7 +36,7 @@ const ProductsTable = ({
             sx={{
               "& .MuiTableCell-root": {
                 border: "1px solid black",
-                borderBottom: "3px solid #50C878",
+                borderBottom: "2px solid black",
               },
             }}
           >
@@ -54,7 +54,11 @@ const ProductsTable = ({
               sx={{
                 "& .MuiTableCell-root": {
                   border: "1px solid black",
-                  borderBottom: "3px solid #50C878",
+                  borderBottom: "2px solid black",
+                  backgroundColor:
+                    product.quantity >= 0
+                      ? "rgba(0, 255, 0, 0.2)"
+                      : "rgba(255, 0, 0, 0.2)",
                 },
               }}
               key={product.id}
