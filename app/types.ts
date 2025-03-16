@@ -6,6 +6,7 @@ export type product = {
   id: string;
   active: boolean;
   nutritionalValues: nutritionalValues;
+  quantity: number;
 };
 export type newProduct = Omit<product, "id">;
 export type nutritionalValues = {
@@ -28,11 +29,11 @@ export type location = {
   id: string;
 };
 export type couponCode = {
-  coupon_code : string;
-  discount_percentage : number;
-  id : string;
-  active : boolean;
-}
+  coupon_code: string;
+  discount_percentage: number;
+  id: string;
+  active: boolean;
+};
 export type orderItem = Omit<product, "nutritionalValues" | "description"> & {
   quantity: number;
   order_id: string;

@@ -31,6 +31,7 @@ const ProductForm = ({ onClose, onSubmit }: ProductFormProps) => {
     picture: "",
     active: true,
     nutritionalValues: initialNutritionalValues,
+    quantity: 0,
   };
 
   const [newProduct, setNewProduct] = useState<newProduct>(initialProduct);
@@ -44,7 +45,7 @@ const ProductForm = ({ onClose, onSubmit }: ProductFormProps) => {
       [id]: value,
     }));
   };
-  
+
   const handlePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const selectedFile = event.target.files[0];

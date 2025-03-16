@@ -17,6 +17,7 @@ export const addProduct = async (productData: newProduct) => {
       "nutritionalValues",
       JSON.stringify(productData.nutritionalValues)
     );
+    formData.append("quantity", String(productData.quantity));
 
     formData.append("active", String(productData.active));
 
@@ -47,13 +48,13 @@ export const editProduct = async (productData: product) => {
     formData.append("price", String(productData.price));
     formData.append("picture", productData.picture);
     formData.append("product_id", productData.id);
+    formData.append("quantity", String(productData.quantity));
     formData.append(
       "nutritionalValues",
       JSON.stringify(productData.nutritionalValues)
     );
 
     formData.append("active", String(productData.active));
-
     const response = await axios.post(`${server}/edit_product`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -121,8 +122,14 @@ export const deleteClient = async (clientId: string) => {
 export const getCouponCodes = async () => {
   return axios.get(server + "/get_coupon_codes");
 };
-export const addCouponCode = async (couponCode: string, discountPercentage : number) => {
-  return axios.post(server + "/add_coupon_code", { coupon_code: couponCode, discount_percentage : discountPercentage });
+export const addCouponCode = async (
+  couponCode: string,
+  discountPercentage: number
+) => {
+  return axios.post(server + "/add_coupon_code", {
+    coupon_code: couponCode,
+    discount_percentage: discountPercentage,
+  });
 };
 export const deleteCouponCode = async (couponCodeId: string) => {
   return axios.delete(server + `/delete_coupon_code/${couponCodeId}`);

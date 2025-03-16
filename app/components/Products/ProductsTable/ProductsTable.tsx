@@ -13,6 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { product } from "@/app/types";
 import Image from "next/image";
+import QuantityEditor from "./QuantityEditor/QuantityEditor";
 
 type ProductsTableProps = {
   products: product[];
@@ -42,6 +43,7 @@ const ProductsTable = ({
             <TableCell align="left"></TableCell>
             <TableCell align="center">פעיל</TableCell>
             <TableCell align="center">מחיר</TableCell>
+            <TableCell align="center">כמות</TableCell>
             <TableCell align="center">שם</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
@@ -73,6 +75,9 @@ const ProductsTable = ({
                 />
               </TableCell>
               <TableCell align="center">₪ {product.price}</TableCell>
+              <TableCell align="center">
+                <QuantityEditor product={product} />
+              </TableCell>
               <TableCell align="center">{product.name}</TableCell>
               <TableCell align="right">
                 <Image
