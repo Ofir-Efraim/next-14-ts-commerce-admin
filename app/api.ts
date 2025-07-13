@@ -137,3 +137,8 @@ export const deleteCouponCode = async (couponCodeId: string) => {
 export const toggleCouponCodeActive = async (couponCodeId: string) => {
   return axios.post(server + `/toggle_coupon_code_active/${couponCodeId}`);
 };
+export const exportOrdersToExcel = async () => {
+  return axios.get(server + "/export_orders", {
+    responseType: "text",
+  });
+};

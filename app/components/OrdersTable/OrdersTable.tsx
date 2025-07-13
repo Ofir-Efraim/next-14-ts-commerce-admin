@@ -10,6 +10,7 @@ import {
   IconButton,
   Pagination,
   Popover,
+  Button,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
@@ -34,6 +35,7 @@ type ordersTableProps = {
   handleAddQuery: (queryKey: string, queryValue: string) => void;
   handleRemoveQuery: (queryKey: string, queryValue?: string) => void;
   sumPrice: number;
+  handleExportToExcel: () => void;
 };
 
 const OrdersTable = ({
@@ -52,6 +54,7 @@ const OrdersTable = ({
   handleAddQuery,
   handleRemoveQuery,
   sumPrice,
+  handleExportToExcel,
 }: ordersTableProps) => {
   const [clicked, setClicked] = useState(false);
   const [statusAnchorEl, setStatusAnchorEl] = useState<HTMLElement | null>(
@@ -114,6 +117,9 @@ const OrdersTable = ({
   }, []);
   return (
     <div style={{ margin: "10px 40px" }}>
+      <Button variant="contained" onClick={handleExportToExcel}>
+        ייצא לאקסל
+      </Button>
       <h1 style={{ textAlign: "center" }}>הזמנות</h1>
       <p>מחיר כולל {sumPrice?.toLocaleString()} שקלים</p>
       <Popover

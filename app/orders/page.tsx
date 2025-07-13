@@ -11,7 +11,9 @@ import {
   markOrderUnpaid,
   markOrderBagged,
   markOrderUnbagged,
+  exportOrdersToExcel,
 } from "../api";
+import { saveAs } from "file-saver";
 
 export default function Home() {
   const [orders, setorders] = useState<order[]>([]);
@@ -99,6 +101,28 @@ export default function Home() {
     });
   };
 
+  const handleExportToExcel = async (): Promise<void> => {
+    try {
+      const response = await exportOrdersToExcel();
+      const base64Data = response.data;
+      const binaryString = atob(base64Data); // decode base64 string
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+
+      const blob = new Blob([bytes.buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      saveAs(blob, "orders.xlsx");
+    } catch (error) {
+      console.error("Error exporting orders to Excel:", error);
+    }
+  };
+
   return (
     <main>
       <OrdersTable
@@ -117,6 +141,7 @@ export default function Home() {
         handleRemoveQuery={handleRemoveQuery}
         fetchorders={fetchorders}
         sumPrice={sumPrice}
+        handleExportToExcel={handleExportToExcel}
       />
     </main>
   );
